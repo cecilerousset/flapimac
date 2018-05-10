@@ -40,6 +40,8 @@ int main(int argc, char** argv) {
         fprintf(stderr, "Impossible d'initialiser la SDL. Fin du programme.\n");
         return EXIT_FAILURE;
     }
+
+    SDL_EnableKeyRepeat(40,40);
     
     // Ouverture d'une fenêtre et création d'un contexte OpenGL
     if(NULL == SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, BIT_PER_PIXEL, SDL_OPENGL | SDL_RESIZABLE)) {
@@ -77,10 +79,12 @@ int main(int argc, char** argv) {
         //drawProjectile(projectile);
         glPopMatrix();
 
-        Obstacle obstacle = creerObstacle(20, 5, 1);
-        drawObstacle(obstacle);
+        Obstacle oblist = NULL;
+        oblist = creerObstacle(oblist, 10, 5, 1);
+        oblist = creerObstacle(oblist, 10, 3, 1);
+        drawObstacles(oblist);
 
-        collisionObstacle(vaisseau, obstacle);
+        collisionObstacle(vaisseau, oblist);
 
         resizeViewportVaisseau(vaisseau);
         
