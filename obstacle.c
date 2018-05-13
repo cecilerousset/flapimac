@@ -41,8 +41,6 @@ void drawObstacles(Obstacle oblist){
     }
 }
 
-
-
 // CODE A CECILE
 /*
 Obstacle creerObstacle(float x, float y, float taille){

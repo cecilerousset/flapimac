@@ -80,8 +80,11 @@ int main(int argc, char** argv) {
         glPopMatrix();
 
         Obstacle oblist = NULL;
-        oblist = creerObstacle(oblist, 10, 5, 1);
-        oblist = creerObstacle(oblist, 10, 3, 1);
+
+        //oblist = creerObstacle(oblist, 10, 5, 1);
+        //oblist = creerObstacle(oblist, 10, 3, 1);
+        
+        levelPPM("map.ppm", oblist);
         drawObstacles(oblist);
 
         collisionObstacle(vaisseau, oblist);
