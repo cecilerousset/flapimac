@@ -46,6 +46,7 @@ int main(int argc, char** argv) {
     }
 
     SDL_EnableKeyRepeat(20,20);
+
     
     // Ouverture d'une fenêtre et création d'un contexte OpenGL
     if(NULL == SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, BIT_PER_PIXEL, SDL_OPENGL | SDL_RESIZABLE)) {
