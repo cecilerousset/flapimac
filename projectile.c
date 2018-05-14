@@ -10,7 +10,7 @@
 #include "formes.h"
 #include "vaisseau.h"
 
-//Initialise les projectiles
+//Initialise les projectiles du vaisseau
 Projectile creerProjectile(Projectile projlist, float x, float y, float taille){
     Objet *proj;
     if((proj = malloc(sizeof(Objet))) == NULL){

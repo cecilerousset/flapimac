@@ -14,6 +14,8 @@
 #include "collision.h"
 #include "ppm.h"
 #include "ennemi.h"
+#include "projectileennemi.h"
+#include "arrivee.h"
 
 /* Dimensions de la fenêtre */
 static unsigned int WINDOW_WIDTH = 800;
@@ -43,7 +45,7 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 
-    SDL_EnableKeyRepeat(40,40);
+    SDL_EnableKeyRepeat(20,20);
     
     // Ouverture d'une fenêtre et création d'un contexte OpenGL
     if(NULL == SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, BIT_PER_PIXEL, SDL_OPENGL | SDL_RESIZABLE)) {
@@ -66,7 +68,8 @@ int main(int argc, char** argv) {
     Projectile projlist = NULL;
     Ennemi enlist = NULL;
     enlist = creerEnnemi(enlist, 10, 5, 1.5);
-    
+    ProjectileEnnemi projlistennemi = NULL;
+    Arrivee arrivlist = NULL;
 
 
     // Boucle d'affichage
@@ -80,14 +83,17 @@ int main(int argc, char** argv) {
         
         //glLoadIdentity(); // On réinitialise la matric MODELVIEW à Identité, annulant ainsi toutes les transformations précédentes
         
-        creeMap("map2.ppm", oblist, vaisseau, projlist);
+        creeMap("map7.ppm", oblist, vaisseau, projlist, arrivlist, enlist, projlistennemi);
 
-        
-        //mouvementEnnemi(enlist);
-        //ennemiDescend(enlist);
-        
-        //drawEnnemi(enlist);
+        //Affichage, déplacement et tir des ennemis
+        mouvementEnnemi(enlist);
+        projlistennemi = tirEnnemi(projlistennemi, enlist);
+        avanceeProjectileEnnemi(projlistennemi);
+        drawProjectileEnnemi(projlistennemi);
+        drawEnnemi(enlist);
 
+        //collisionProjectileEnnemi(vaisseau, projlistennemi);
+    
         avanceeVaisseau(vaisseau);
         avanceeProjectile(projlist);
 
@@ -109,21 +115,42 @@ int main(int argc, char** argv) {
         /* Vérifie que le vaisseau a encore de la vie, sinon arrete le jeu */
         if (vaisseau->vie <= 0){
             printf("\n");
-            printf(" ☻☻☻☻☻    ☻☻☻   ☻     ☻ ☻☻☻☻☻☻☻\n");
-            printf("☻☻   ☻☻  ☻☻ ☻☻  ☻☻   ☻☻ ☻☻\n");
-            printf("☻☻      ☻☻   ☻☻ ☻☻☻ ☻☻☻ ☻☻\n");
-            printf("☻☻  ☻☻☻ ☻☻   ☻☻ ☻☻☻☻☻☻☻ ☻☻☻☻☻☻☻\n");
-            printf("☻☻   ☻☻ ☻☻☻☻☻☻☻ ☻☻ ☻ ☻☻ ☻☻\n");
-            printf("☻☻   ☻☻ ☻☻   ☻☻ ☻☻   ☻☻ ☻☻\n");
-            printf(" ☻☻☻☻☻  ☻☻   ☻☻ ☻☻   ☻☻ ☻☻☻☻☻☻☻\n\n");
+            printf(" █████    ███   █     █ ███████\n");
+            printf("██   ██  ██ ██  ██   ██ ██     \n");
+            printf("██      ██   ██ ███ ███ ██     \n");
+            printf("██  ███ ██   ██ ███████ ███████\n");
+            printf("██   ██ ███████ ██ █ ██ ██     \n");
+            printf("██   ██ ██   ██ ██   ██ ██     \n");
+            printf(" █████  ██   ██ ██   ██ ███████\n\n");
 
-            printf(" ☻☻☻☻☻  ☻☻   ☻☻ ☻☻☻☻☻☻☻ ☻☻☻☻☻☻ \n");
-            printf("☻☻   ☻☻ ☻☻   ☻☻ ☻☻      ☻☻   ☻☻\n");
-            printf("☻☻   ☻☻ ☻☻   ☻☻ ☻☻      ☻☻   ☻☻\n");
-            printf("☻☻   ☻☻ ☻☻   ☻☻ ☻☻☻☻☻☻☻ ☻☻☻☻☻☻ \n");
-            printf("☻☻   ☻☻ ☻☻   ☻☻ ☻☻      ☻☻ ☻☻  \n");
-            printf("☻☻   ☻☻  ☻☻ ☻☻  ☻☻      ☻☻  ☻☻ \n");
-            printf(" ☻☻☻☻☻    ☻☻☻   ☻☻☻☻☻☻☻ ☻☻   ☻☻\n\n");
+            printf(" █████  ██   ██ ███████ ██████ \n");
+            printf("██   ██ ██   ██ ██      ██   ██\n");
+            printf("██   ██ ██   ██ ██      ██   ██\n");
+            printf("██   ██ ██   ██ ███████ ██████ \n");
+            printf("██   ██ ██   ██ ██      ██ ██  \n");
+            printf("██   ██  ██ ██  ██      ██  ██ \n");
+            printf(" █████    ███   ███████ ██   ██\n\n");
+            loop = 0;
+        }
+
+        if (vaisseau->vie >= 100){
+            printf("\n");
+            printf(" ██   ██  █████  ██   ██\n");
+            printf(" ██   ██ ██   ██ ██   ██\n");
+            printf(" ██   ██ ██   ██ ██   ██\n");
+            printf("  █████  ██   ██ ██   ██\n");
+            printf("   ███   ██   ██ ██   ██       ██  ██████████  ██\n");
+            printf("   ███   ██   ██ ██   ██     ██  ██          ██  ██\n");
+            printf("   ███    █████   █████      ██  ██          ██  ██\n");
+            printf("                               ██  ██      ██  ██\n");
+            printf(" ██   ██ ███████ ███  ██             ██  ██\n");
+            printf(" ██   ██   ███   ███  ██               ██\n");
+            printf(" ██   ██   ███   ██ █ ██             ██████\n");
+            printf(" ██ █ ██   ███   ██ █ ██           ██████████\n");
+            printf(" ███████   ███   ██ █ ██\n");
+            printf(" ███ ███   ███   ██  ███\n");
+            printf(" ██   ██ ███████ ██  ███\n\n");
+            
             loop = 0;
         }
 

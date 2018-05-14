@@ -5,9 +5,6 @@
 
 Ennemi creerEnnemi(Ennemi enlist, float x, float y, float taille);
 void drawEnnemi(Ennemi enlist);
-int aleatoire(int min, int max);
-void ennemiMonte(Ennemi enlist);
-void ennemiDescend(Ennemi enlist);
 void mouvementEnnemi(Ennemi enlist);
 
 #endif

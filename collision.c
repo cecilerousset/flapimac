@@ -23,7 +23,7 @@ void collisionObstacle(Vaisseau vaisseau, Obstacle oblist){
 	}
 }
 
-//Analyse si le vaisseau rencontre un obstacle
+//Analyse si les projectiles rencontrent un obstacle
 void collisionProjectile(Projectile projlist, Obstacle oblist){
 	while(projlist != NULL){
 		while(oblist != NULL){
@@ -38,5 +38,31 @@ void collisionProjectile(Projectile projlist, Obstacle oblist){
 		}
 		projlist = projlist->suiv;
 	}
+}
 
+//Analyse si je vaisseau rencontre des projectiles ennemis
+void collisionProjectileEnnemi(Vaisseau vaisseau, ProjectileEnnemi projlistennemi){
+	while(projlistennemi != NULL){
+		//collision en x
+    	if(vaisseau->boundingbox.pmaxx >= projlistennemi->boundingbox.pminx && vaisseau->boundingbox.pminx <= projlistennemi->boundingbox.pmaxx){ 
+        	//collision en y
+        	if(vaisseau->boundingbox.pmaxy >= projlistennemi->boundingbox.pminy && vaisseau->boundingbox.pminy <= projlistennemi->boundingbox.pmaxy){
+        		vaisseau->vie -= 1;
+        	}
+    	}
+    	projlistennemi = projlistennemi->suiv;
+	}
+}
+
+void collisionArrivee(Vaisseau vaisseau, Arrivee arrivlist){
+	while (arrivlist != NULL){
+		//collision en x
+    	if(vaisseau->boundingbox.pmaxx >= arrivlist->boundingbox.pminx && vaisseau->boundingbox.pminx <= arrivlist->boundingbox.pmaxx){ 
+        	//collision en y
+        	if(vaisseau->boundingbox.pmaxy >= arrivlist->boundingbox.pminy && vaisseau->boundingbox.pminy <= arrivlist->boundingbox.pmaxy){
+        		vaisseau->vie = 100;
+        	}
+    	}
+    	arrivlist = arrivlist->suiv;
+	}
 }

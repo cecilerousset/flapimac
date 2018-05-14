@@ -20,7 +20,7 @@ Ennemi creerEnnemi(Ennemi enlist, float x, float y, float taille){
     ennemi->posx = x;
     ennemi->posy = y;
     ennemi->taille = taille;
-    ennemi->vitesse = 0;
+    ennemi->vitesse = 0.08;
     ennemi->suiv = enlist;
 
     /* Bounding box */
@@ -46,72 +46,19 @@ void drawEnnemi(Ennemi enlist){
     }  
 }
 
-int aleatoire(int min, int max){
-    return (min + (rand () % (max-min+1)));
-}
 
-
-//Fait avancer le vaisseau
-void ennemiMonte(Ennemi enlist){
-    while(enlist != NULL){
-        if (enlist->posy != 10.){
-            if (enlist->posy != -10.){
-                int ajout = aleatoire(-10, 10);
-                enlist->posy += (ajout*0.01);
-                //printf("%d\n",ajout);
-                //printf("%f\n", enlist->posy);
-            }
-            
-        }
-        enlist = enlist->suiv;
-    }
-    /*vaisseau->posx +=0.08;
-    vaisseau->boundingbox.pminx += 0.08;
-    vaisseau->boundingbox.pmaxx += 0.08;*/
-}
-
+//Fait bouger l'ennemi de haut en bas
 void mouvementEnnemi(Ennemi enlist){
     while(enlist != NULL){
-        while(enlist->posy != 10.){
-            enlist->posy +=0.1;
+        if(enlist->boundingbox.pminy + enlist->vitesse <= -10. || enlist->boundingbox.pmaxy + enlist->vitesse >= 10.){
+            enlist->vitesse = - enlist->vitesse;
         }
-        while(enlist->posy != -10.){
-            enlist->posy -=0.1;
-        }
+        enlist->boundingbox.pminy += enlist->vitesse;
+        enlist->boundingbox.pmaxy += enlist->vitesse;
+        enlist->posy += enlist->vitesse;
+        
+
         enlist = enlist->suiv;
     }
 }
 
-void ennemiDescend(Ennemi enlist){
-    while(enlist != NULL){
-        while (enlist->posy != -10.){
-            enlist->posy -= 0.5;
-        }
-        enlist = enlist->suiv;
-    }
-    /*vaisseau->posx +=0.08;
-    vaisseau->boundingbox.pminx += 0.08;
-    vaisseau->boundingbox.pmaxx += 0.08;*/
-}
-
-/*//Fait monter le vaisseau
-void vaisseauMonte(Vaisseau vaisseau){
-    if (!vaisseau){
-        printf("Le vaisseau n'existe pas\n");
-        return;
-    }
-    vaisseau->posy +=0.5;
-    vaisseau->boundingbox.pminy += 0.5;
-    vaisseau->boundingbox.pmaxy += 0.5;
-}
-
-//Fait descendre le vaisseau
-void vaisseauDescend(Vaisseau vaisseau){
-    if (!vaisseau){
-        printf("Le vaisseau n'existe pas\n");
-        return;
-    }
-    vaisseau->posy -=0.5;
-    vaisseau->boundingbox.pminy -= 0.5;
-    vaisseau->boundingbox.pmaxy -= 0.5;
-}*/
