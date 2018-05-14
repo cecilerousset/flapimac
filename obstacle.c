@@ -1,4 +1,5 @@
 #include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <stdlib.h>
@@ -9,10 +10,7 @@
 #include "formes.h"
 #include "vaisseau.h"
 
-<<<<<<< HEAD
 //Initialise les obstacles
-=======
->>>>>>> 9c4695b81e6dc7861ae866b564e07d2b27aa1ff4
 Obstacle creerObstacle(Obstacle oblist, float x, float y, float taille){
     Objet *obst;
     if((obst = malloc(sizeof(Objet))) == NULL){
@@ -24,7 +22,6 @@ Obstacle creerObstacle(Obstacle oblist, float x, float y, float taille){
     obst->taille = taille;
     obst->vitesse = 0;
     obst->suiv = oblist;
-<<<<<<< HEAD
 
     /* Bounding box */
     /* 1/2 permet de faire une bounding box qui arrive pile aux bords du carré*/
@@ -43,7 +40,7 @@ void drawObstacles(Obstacle oblist){
         glColor3f(255, 0, 0);
         glTranslatef(oblist->posx, oblist->posy, 0);
         glScalef(oblist->taille, oblist->taille, 1);
-        drawSquare(1);
+        drawSquareTexture(1, "wall2.jpg");
         glPopMatrix();
         
         oblist = oblist->suiv;
@@ -75,7 +72,6 @@ void drawObstacles(Obstacle oblist){
 }
 
 // CODE A CECILE
-/*
 Obstacle creerObstacle(float x, float y, float taille){
 >>>>>>> 9c4695b81e6dc7861ae866b564e07d2b27aa1ff4
     Obstacle temp = (Obstacle) malloc(sizeof(Objet));
@@ -90,8 +86,8 @@ Obstacle creerObstacle(float x, float y, float taille){
     temp->vitesse = 0;
 <<<<<<< HEAD
 
-    /* Bounding box */
-    /* 1/2 permet de faire une bounding box qui arrive pile aux bords du carré
+    // Bounding box
+     1/2 permet de faire une bounding box qui arrive pile aux bords du carré
     temp->boundingbox.pminx = temp->posx - taille/2;
     temp->boundingbox.pmaxx = temp->posx + taille/2;
     temp->boundingbox.pminy = temp->posy - taille/2;
