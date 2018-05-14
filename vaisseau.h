@@ -10,11 +10,12 @@ typedef struct objet {
     float vie;
     struct objet *suiv;
     BBOX boundingbox;
-} Objet, *Vaisseau, *Obstacle, *Projectile;
+} Objet, *Vaisseau, *Obstacle, *Projectile, *Ennemi;
 
 Vaisseau creerVaisseau(float x, float y, float taille);
 void drawVaisseau(Vaisseau vaisseau);
 void resizeViewportVaisseau(Vaisseau vaisseau);
+void avanceeVaisseau(Vaisseau vaisseau);
 void vaisseauMonte(Vaisseau vaisseau);
 void vaisseauDescend(Vaisseau vaisseau);
 

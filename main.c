@@ -12,6 +12,8 @@
 #include "obstacle.h"
 #include "bbox.h"
 #include "collision.h"
+#include "ppm.h"
+#include "ennemi.h"
 
 /* Dimensions de la fenêtre */
 static unsigned int WINDOW_WIDTH = 800;
@@ -40,6 +42,8 @@ int main(int argc, char** argv) {
         fprintf(stderr, "Impossible d'initialiser la SDL. Fin du programme.\n");
         return EXIT_FAILURE;
     }
+
+    SDL_EnableKeyRepeat(40,40);
     
     // Ouverture d'une fenêtre et création d'un contexte OpenGL
     if(NULL == SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, BIT_PER_PIXEL, SDL_OPENGL | SDL_RESIZABLE)) {
@@ -56,10 +60,16 @@ int main(int argc, char** argv) {
     glMatrixMode(GL_MODELVIEW); // On active la matrice MODELVIEW, celle chargée de la transformation des objets dans l'espace
 
     int loop = 1;
-    Vaisseau vaisseau = creerVaisseau(-8,0,1);
+    Vaisseau vaisseau = creerVaisseau(0,0,1);
+
+    Obstacle oblist = NULL;
+    Projectile projlist = NULL;
+    Ennemi enlist = NULL;
+    enlist = creerEnnemi(enlist, 10, 5, 1.5);
+    
 
 
-        // Boucle d'affichage
+    // Boucle d'affichage
     while(loop) {
 
         Uint32 startTime = SDL_GetTicks();
@@ -70,23 +80,50 @@ int main(int argc, char** argv) {
         
         //glLoadIdentity(); // On réinitialise la matric MODELVIEW à Identité, annulant ainsi toutes les transformations précédentes
         
+        creeMap("map2.ppm", oblist, vaisseau, projlist);
+
+        
+        //mouvementEnnemi(enlist);
+        //ennemiDescend(enlist);
+        
+        //drawEnnemi(enlist);
+
         avanceeVaisseau(vaisseau);
+        avanceeProjectile(projlist);
+
+        //printf("%d", aleatoire(-1, 1));
+
+    
+        //collisionObstacle(vaisseau, oblist);
+        //collisionProjectile(projlist, oblist);
 
         glPushMatrix();
         drawVaisseau(vaisseau);
-        //drawProjectile(projectile);
+        //drawObstacles(oblist);
+        drawProjectile(projlist);
         glPopMatrix();
 
-        Obstacle obstacle = creerObstacle(20, 5, 1);
-        drawObstacle(obstacle);
-
-        collisionObstacle(vaisseau, obstacle);
 
         resizeViewportVaisseau(vaisseau);
         
         /* Vérifie que le vaisseau a encore de la vie, sinon arrete le jeu */
         if (vaisseau->vie <= 0){
-            printf("Fin de partie\n\n");
+            printf("\n");
+            printf(" ☻☻☻☻☻    ☻☻☻   ☻     ☻ ☻☻☻☻☻☻☻\n");
+            printf("☻☻   ☻☻  ☻☻ ☻☻  ☻☻   ☻☻ ☻☻\n");
+            printf("☻☻      ☻☻   ☻☻ ☻☻☻ ☻☻☻ ☻☻\n");
+            printf("☻☻  ☻☻☻ ☻☻   ☻☻ ☻☻☻☻☻☻☻ ☻☻☻☻☻☻☻\n");
+            printf("☻☻   ☻☻ ☻☻☻☻☻☻☻ ☻☻ ☻ ☻☻ ☻☻\n");
+            printf("☻☻   ☻☻ ☻☻   ☻☻ ☻☻   ☻☻ ☻☻\n");
+            printf(" ☻☻☻☻☻  ☻☻   ☻☻ ☻☻   ☻☻ ☻☻☻☻☻☻☻\n\n");
+
+            printf(" ☻☻☻☻☻  ☻☻   ☻☻ ☻☻☻☻☻☻☻ ☻☻☻☻☻☻ \n");
+            printf("☻☻   ☻☻ ☻☻   ☻☻ ☻☻      ☻☻   ☻☻\n");
+            printf("☻☻   ☻☻ ☻☻   ☻☻ ☻☻      ☻☻   ☻☻\n");
+            printf("☻☻   ☻☻ ☻☻   ☻☻ ☻☻☻☻☻☻☻ ☻☻☻☻☻☻ \n");
+            printf("☻☻   ☻☻ ☻☻   ☻☻ ☻☻      ☻☻ ☻☻  \n");
+            printf("☻☻   ☻☻  ☻☻ ☻☻  ☻☻      ☻☻  ☻☻ \n");
+            printf(" ☻☻☻☻☻    ☻☻☻   ☻☻☻☻☻☻☻ ☻☻   ☻☻\n\n");
             loop = 0;
         }
 
@@ -124,8 +161,7 @@ int main(int argc, char** argv) {
 
                         case SDLK_SPACE:
                             glPushMatrix();
-                            Projectile projectile = creerProjectile(vaisseau->posx+0.5, vaisseau->posy, 1);
-                            drawProjectile(projectile);
+                            projlist = creerProjectile(projlist, vaisseau->posx + 0.5, vaisseau->posy, 1);
                             glPopMatrix();
                         break;
 

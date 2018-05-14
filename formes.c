@@ -8,6 +8,7 @@
 
 #include "formes.h"
 
+//Dessine un carré plein
 void drawSquare(int full) {
     /*
     Fonction qui dessine un carré canonique de côté 1, centré sur l'origine.
@@ -25,6 +26,7 @@ void drawSquare(int full) {
     glEnd();
 }
 
+//Dessine un disque
 unsigned int CIRCLE_SUBDIVISIONS = 100;
 void drawCircle(int full) {
     /*

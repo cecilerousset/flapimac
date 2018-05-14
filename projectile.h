@@ -3,8 +3,8 @@
 
 #include "vaisseau.h"
 
-Projectile creerProjectile(float x, float y, float taille);
-Projectile drawProjectile(Projectile projectile);
-void tir(Vaisseau vaisseau);
+Projectile creerProjectile(Projectile projlist, float x, float y, float taille);
+void drawProjectile(Projectile projlist);
+void avanceeProjectile(Projectile projlist);
 
 #endif
