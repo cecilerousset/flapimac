@@ -40,7 +40,7 @@ void drawArrivee(Arrivee arrivlist){
         glColor3f(255, 255, 255);
         glTranslatef(arrivlist->posx, arrivlist->posy, 0);
         glScalef(arrivlist->taille, arrivlist->taille, 1);
-        drawSquare(1);
+        drawSquareTextureJpg(1, "damier.jpg");
         glPopMatrix();
         
         arrivlist = arrivlist->suiv;

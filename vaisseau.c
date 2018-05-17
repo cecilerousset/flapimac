@@ -35,11 +35,9 @@ Vaisseau creerVaisseau(float x, float y, float taille){
 //Dessine le vaisseau
 void drawVaisseau(Vaisseau vaisseau){
     glPushMatrix();
-    glColor3f(0, 205, 0);
     glTranslatef(vaisseau->posx, vaisseau->posy, 0);
-    glRotatef(45, 0, 0, 1);
     glScalef(vaisseau->taille, vaisseau->taille, 1);
-    drawSquare(1);
+    drawSquareTexturePng(1, "superman.png");
     glPopMatrix();
 }
 

@@ -40,7 +40,7 @@ void drawObstacles(Obstacle oblist){
         glColor3f(255, 0, 0);
         glTranslatef(oblist->posx, oblist->posy, 0);
         glScalef(oblist->taille, oblist->taille, 1);
-        drawSquareTexture(1, "wall2.jpg");
+        drawSquareTextureJpg(1, "wall.jpg");
         glPopMatrix();
         
         oblist = oblist->suiv;
