@@ -40,10 +40,10 @@ void drawProjectile(Projectile projlist){
     while (projlist != NULL){
         if(projlist->vie != 0){
             glPushMatrix();
-            glColor3f(240, 195, 0);
+            //glColor3f(240, 195, 0);
             glTranslatef(projlist->posx, projlist->posy, 0);
             glScalef(projlist->taille, projlist->taille/4, 1);
-            drawSquare(1);
+            drawSquareTexturePng(1, "laser_b.png");
             glPopMatrix();
         }
         projlist = projlist->suiv;

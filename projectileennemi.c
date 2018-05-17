@@ -45,7 +45,7 @@ void drawProjectileEnnemi(ProjectileEnnemi projlistennemi){
             glColor3f(240, 195, 0);
             glTranslatef(projlistennemi->posx, projlistennemi->posy, 0);
             glScalef(projlistennemi->taille, projlistennemi->taille/4, 1);
-            drawSquare(1);
+            drawSquareTexturePng(1, "laser_r.png");
             glPopMatrix();
         }
         projlistennemi = projlistennemi->suiv;

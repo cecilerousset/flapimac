@@ -36,8 +36,6 @@ void resizeViewport() {
     SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, BIT_PER_PIXEL, SDL_OPENGL | SDL_RESIZABLE);
 }
 
-
-
 int main(int argc, char** argv) {
 
     // Initialisation de la SDL
@@ -46,11 +44,14 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 
+    //Autorise l'appui prolongé sur les touches
     SDL_EnableKeyRepeat(20,20);
 
-    
+    SDL_Surface *ecran = NULL;
+    ecran = SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, BIT_PER_PIXEL, SDL_OPENGL | SDL_RESIZABLE);
+
     // Ouverture d'une fenêtre et création d'un contexte OpenGL
-    if(NULL == SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, BIT_PER_PIXEL, SDL_OPENGL | SDL_RESIZABLE)) {
+    if(ecran == NULL) {
         fprintf(stderr, "Impossible d'ouvrir la fenetre. Fin du programme.\n");
         return EXIT_FAILURE;
     }
@@ -78,7 +79,7 @@ int main(int argc, char** argv) {
 
 
     // Boucle d'affichage
-    while(loop) {
+    while(loop == 1) {
 
         Uint32 startTime = SDL_GetTicks();
 
@@ -97,7 +98,7 @@ int main(int argc, char** argv) {
         drawProjectileEnnemi(projlistennemi);
         drawEnnemi(enlist);
 
-        //collisionProjectileEnnemi(vaisseau, projlistennemi);
+        collisionProjectileEnnemi(vaisseau, projlistennemi);
     
         avanceeVaisseau(vaisseau);
         avanceeProjectile(projlist);
@@ -105,8 +106,8 @@ int main(int argc, char** argv) {
         //printf("%d", aleatoire(-1, 1));
 
     
-        //collisionObstacle(vaisseau, oblist);
-        //collisionProjectile(projlist, oblist);
+        collisionObstacle(vaisseau, oblist);
+        collisionProjectile(projlist, oblist);
 
         glPushMatrix();
         drawVaisseau(vaisseau);
@@ -119,44 +120,24 @@ int main(int argc, char** argv) {
         
         /* Vérifie que le vaisseau a encore de la vie, sinon arrete le jeu */
         if (vaisseau->vie <= 0){
-            printf("\n");
-            printf(" █████    ███   █     █ ███████\n");
-            printf("██   ██  ██ ██  ██   ██ ██     \n");
-            printf("██      ██   ██ ███ ███ ██     \n");
-            printf("██  ███ ██   ██ ███████ ███████\n");
-            printf("██   ██ ███████ ██ █ ██ ██     \n");
-            printf("██   ██ ██   ██ ██   ██ ██     \n");
-            printf(" █████  ██   ██ ██   ██ ███████\n\n");
+            //glClearColor(0.1, 0.1, 0.1 ,1.0);
+            //SDL_GL_SwapBuffers();
+            glClear(GL_COLOR_BUFFER_BIT);
+            glLoadIdentity();
 
-            printf(" █████  ██   ██ ███████ ██████ \n");
-            printf("██   ██ ██   ██ ██      ██   ██\n");
-            printf("██   ██ ██   ██ ██      ██   ██\n");
-            printf("██   ██ ██   ██ ███████ ██████ \n");
-            printf("██   ██ ██   ██ ██      ██ ██  \n");
-            printf("██   ██  ██ ██  ██      ██  ██ \n");
-            printf(" █████    ███   ███████ ██   ██\n\n");
-            loop = 0;
+            drawFullScreenJpg(1, "gameover.jpg");
+            //SDL_Delay(5000);
+
         }
 
         if (vaisseau->vie >= 100){
-            printf("\n");
-            printf(" ██   ██  █████  ██   ██\n");
-            printf(" ██   ██ ██   ██ ██   ██\n");
-            printf(" ██   ██ ██   ██ ██   ██\n");
-            printf("  █████  ██   ██ ██   ██\n");
-            printf("   ███   ██   ██ ██   ██       ██  ██████████  ██\n");
-            printf("   ███   ██   ██ ██   ██     ██  ██          ██  ██\n");
-            printf("   ███    █████   █████      ██  ██          ██  ██\n");
-            printf("                               ██  ██      ██  ██\n");
-            printf(" ██   ██ ███████ ███  ██             ██  ██\n");
-            printf(" ██   ██   ███   ███  ██               ██\n");
-            printf(" ██   ██   ███   ██ █ ██             ██████\n");
-            printf(" ██ █ ██   ███   ██ █ ██           ██████████\n");
-            printf(" ███████   ███   ██ █ ██\n");
-            printf(" ███ ███   ███   ██  ███\n");
-            printf(" ██   ██ ███████ ██  ███\n\n");
-            
-            loop = 0;
+            //glClearColor(0.1, 0.1, 0.1 ,1.0);
+            //SDL_GL_SwapBuffers();
+            glClear(GL_COLOR_BUFFER_BIT);
+            glLoadIdentity();
+
+            drawFullScreenJpg(1, "win.jpg");
+            //SDL_Delay(5000);
         }
 
         // Boucle traitant les evenements
