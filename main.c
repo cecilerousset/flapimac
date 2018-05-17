@@ -73,6 +73,9 @@ int main(int argc, char** argv) {
     ProjectileEnnemi projlistennemi = NULL;
     Arrivee arrivlist = NULL;
 
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 
     // Boucle d'affichage
     while(loop) {

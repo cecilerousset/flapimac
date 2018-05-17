@@ -39,8 +39,8 @@ void drawEnnemi(Ennemi enlist){
         glPushMatrix();
         glColor3f(240, 195, 50);
         glTranslatef(enlist->posx, enlist->posy, 0);
-        glScalef(enlist->taille, enlist->taille, 1);
-        drawCircle(1);
+        glScalef((enlist->taille)*1.5, (enlist->taille)*1.5, 1);
+        drawSquareTexturePng(1, "spaceship.png");
         glPopMatrix();
         enlist = enlist->suiv;
     }  
