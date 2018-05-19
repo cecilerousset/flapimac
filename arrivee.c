@@ -33,7 +33,7 @@ Arrivee creerArrivee(Arrivee arrivlist, float x, float y, float taille){
     return arriv;
 }
 
-//Dessine la ligne d'arrivée
+//Dessine la ligne d'arrivée avec une texture
 void drawArrivee(Arrivee arrivlist){
     while(arrivlist != NULL){
         glPushMatrix();

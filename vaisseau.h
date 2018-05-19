@@ -8,6 +8,8 @@ typedef struct objet {
     float taille;
     float vitesse;
     float vie;
+    float espacetir;
+    float momenttir;
     struct objet *suiv;
     BBOX boundingbox;
 } Objet, *Vaisseau, *Obstacle, *Projectile, *Ennemi, *ProjectileEnnemi, *Arrivee;

@@ -36,8 +36,6 @@ void resizeViewport() {
     SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, BIT_PER_PIXEL, SDL_OPENGL | SDL_RESIZABLE);
 }
 
-
-
 int main(int argc, char** argv) {
 
     // Initialisation de la SDL
@@ -46,11 +44,14 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 
+    //Autorise l'appui prolongé sur les touches
     SDL_EnableKeyRepeat(20,20);
 
-    
+    SDL_Surface *ecran = NULL;
+    ecran = SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, BIT_PER_PIXEL, SDL_OPENGL | SDL_RESIZABLE);
+
     // Ouverture d'une fenêtre et création d'un contexte OpenGL
-    if(NULL == SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, BIT_PER_PIXEL, SDL_OPENGL | SDL_RESIZABLE)) {
+    if(ecran == NULL) {
         fprintf(stderr, "Impossible d'ouvrir la fenetre. Fin du programme.\n");
         return EXIT_FAILURE;
     }
@@ -70,17 +71,23 @@ int main(int argc, char** argv) {
     Projectile projlist = NULL;
     Ennemi enlist = NULL;
     enlist = creerEnnemi(enlist, 10, 5, 1.5);
+    enlist = creerEnnemi(enlist, 19, -7, 1.5);
     ProjectileEnnemi projlistennemi = NULL;
     Arrivee arrivlist = NULL;
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    int startTime = 0;
+    int prevTime = 0;
+    startTime = SDL_GetTicks();
+
 
     // Boucle d'affichage
-    while(loop) {
+    while(loop == 1) {
 
-        Uint32 startTime = SDL_GetTicks();
+        prevTime = startTime;
+        startTime = SDL_GetTicks();
 
         // Code de dessin
         glClear(GL_COLOR_BUFFER_BIT); // Toujours commencer par clear le buffer
@@ -92,7 +99,8 @@ int main(int argc, char** argv) {
 
         //Affichage, déplacement et tir des ennemis
         mouvementEnnemi(enlist);
-        projlistennemi = tirEnnemi(projlistennemi, enlist);
+        //projlistennemi = tirEnnemi(projlistennemi, enlist);
+        projlistennemi = tir(enlist, projlistennemi, startTime - prevTime);
         avanceeProjectileEnnemi(projlistennemi);
         drawProjectileEnnemi(projlistennemi);
         drawEnnemi(enlist);
@@ -102,15 +110,12 @@ int main(int argc, char** argv) {
         avanceeVaisseau(vaisseau);
         avanceeProjectile(projlist);
 
-        //printf("%d", aleatoire(-1, 1));
-
-    
-        //collisionObstacle(vaisseau, oblist);
-        //collisionProjectile(projlist, oblist);
-
+        
+    /*
+        collisionObstacle(vaisseau, oblist);
+        collisionProjectile(projlist, oblist*/
         glPushMatrix();
         drawVaisseau(vaisseau);
-        //drawObstacles(oblist);
         drawProjectile(projlist);
         glPopMatrix();
 
@@ -119,44 +124,24 @@ int main(int argc, char** argv) {
         
         /* Vérifie que le vaisseau a encore de la vie, sinon arrete le jeu */
         if (vaisseau->vie <= 0){
-            printf("\n");
-            printf(" █████    ███   █     █ ███████\n");
-            printf("██   ██  ██ ██  ██   ██ ██     \n");
-            printf("██      ██   ██ ███ ███ ██     \n");
-            printf("██  ███ ██   ██ ███████ ███████\n");
-            printf("██   ██ ███████ ██ █ ██ ██     \n");
-            printf("██   ██ ██   ██ ██   ██ ██     \n");
-            printf(" █████  ██   ██ ██   ██ ███████\n\n");
+            //glClearColor(0.1, 0.1, 0.1 ,1.0);
+            //SDL_GL_SwapBuffers();
+            glClear(GL_COLOR_BUFFER_BIT);
+            glLoadIdentity();
 
-            printf(" █████  ██   ██ ███████ ██████ \n");
-            printf("██   ██ ██   ██ ██      ██   ██\n");
-            printf("██   ██ ██   ██ ██      ██   ██\n");
-            printf("██   ██ ██   ██ ███████ ██████ \n");
-            printf("██   ██ ██   ██ ██      ██ ██  \n");
-            printf("██   ██  ██ ██  ██      ██  ██ \n");
-            printf(" █████    ███   ███████ ██   ██\n\n");
-            loop = 0;
+            drawFullScreenJpg(1, "gameover.jpg");
+            //SDL_Delay(5000);
+
         }
 
         if (vaisseau->vie >= 100){
-            printf("\n");
-            printf(" ██   ██  █████  ██   ██\n");
-            printf(" ██   ██ ██   ██ ██   ██\n");
-            printf(" ██   ██ ██   ██ ██   ██\n");
-            printf("  █████  ██   ██ ██   ██\n");
-            printf("   ███   ██   ██ ██   ██       ██  ██████████  ██\n");
-            printf("   ███   ██   ██ ██   ██     ██  ██          ██  ██\n");
-            printf("   ███    █████   █████      ██  ██          ██  ██\n");
-            printf("                               ██  ██      ██  ██\n");
-            printf(" ██   ██ ███████ ███  ██             ██  ██\n");
-            printf(" ██   ██   ███   ███  ██               ██\n");
-            printf(" ██   ██   ███   ██ █ ██             ██████\n");
-            printf(" ██ █ ██   ███   ██ █ ██           ██████████\n");
-            printf(" ███████   ███   ██ █ ██\n");
-            printf(" ███ ███   ███   ██  ███\n");
-            printf(" ██   ██ ███████ ██  ███\n\n");
-            
-            loop = 0;
+            //glClearColor(0.1, 0.1, 0.1 ,1.0);
+            //SDL_GL_SwapBuffers();
+            glClear(GL_COLOR_BUFFER_BIT);
+            glLoadIdentity();
+
+            drawFullScreenJpg(1, "win.jpg");
+            //SDL_Delay(5000);
         }
 
         // Boucle traitant les evenements

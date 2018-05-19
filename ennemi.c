@@ -21,6 +21,8 @@ Ennemi creerEnnemi(Ennemi enlist, float x, float y, float taille){
     ennemi->posy = y;
     ennemi->taille = taille;
     ennemi->vitesse = 0.08;
+    ennemi->momenttir = 0.0;
+    ennemi->espacetir = 1000;
     ennemi->suiv = enlist;
 
     /* Bounding box */

@@ -7,6 +7,6 @@ ProjectileEnnemi creerProjectileEnnemi(ProjectileEnnemi projlistennemi, float x,
 void drawProjectileEnnemi(ProjectileEnnemi projlistennemi);
 void avanceeProjectileEnnemi(ProjectileEnnemi projlistennemi);
 ProjectileEnnemi tirEnnemi(ProjectileEnnemi projlistennemi, Ennemi enlist);
-
+ProjectileEnnemi tir(Ennemi enlist, ProjectileEnnemi projlistennemi, float time);
 
 #endif

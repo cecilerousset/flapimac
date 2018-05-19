@@ -45,7 +45,7 @@ void drawProjectileEnnemi(ProjectileEnnemi projlistennemi){
             glColor3f(240, 195, 0);
             glTranslatef(projlistennemi->posx, projlistennemi->posy, 0);
             glScalef(projlistennemi->taille, projlistennemi->taille/4, 1);
-            drawSquare(1);
+            drawSquareTexturePng(1, "laser_r.png");
             glPopMatrix();
         }
         projlistennemi = projlistennemi->suiv;
@@ -67,6 +67,19 @@ void avanceeProjectileEnnemi(ProjectileEnnemi projlistennemi){
 ProjectileEnnemi tirEnnemi(ProjectileEnnemi projlistennemi, Ennemi enlist){
     while(enlist != NULL){
         projlistennemi = creerProjectileEnnemi(projlistennemi, enlist->posx, enlist->posy, 1);
+
+        enlist = enlist->suiv;
+    }
+    return projlistennemi;
+}
+
+ProjectileEnnemi tir(Ennemi enlist, ProjectileEnnemi projlistennemi, float time){
+    while(enlist != NULL){
+        if (enlist->momenttir < 0.){
+            enlist->momenttir += enlist->espacetir;
+            projlistennemi = creerProjectileEnnemi(projlistennemi, enlist->posx, enlist->posy, 1);
+        }
+        enlist->momenttir -= time;
 
         enlist = enlist->suiv;
     }
