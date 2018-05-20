@@ -37,7 +37,7 @@ Obstacle creerObstacle(Obstacle oblist, float x, float y, float taille){
 void drawObstacles(Obstacle oblist){
     while(oblist != NULL){
         glPushMatrix();
-        glColor3f(255, 0, 0);
+        //glColor3f(255, 0, 0);
         glTranslatef(oblist->posx, oblist->posy, 0);
         glScalef(oblist->taille, oblist->taille, 1);
         drawSquareTextureJpg(1, "wall.jpg");

@@ -69,9 +69,11 @@ int main(int argc, char** argv) {
 
     Obstacle oblist = NULL;
     Projectile projlist = NULL;
+
     Ennemi enlist = NULL;
     enlist = creerEnnemi(enlist, 10, 5, 1.5);
-    enlist = creerEnnemi(enlist, 19, -7, 1.5);
+    enlist = creerEnnemi(enlist, 32, -7, 1.5);
+
     ProjectileEnnemi projlistennemi = NULL;
     Arrivee arrivlist = NULL;
 
@@ -91,29 +93,28 @@ int main(int argc, char** argv) {
 
         // Code de dessin
         glClear(GL_COLOR_BUFFER_BIT); // Toujours commencer par clear le buffer
+             
+        creeMap("map7.ppm", oblist, vaisseau, projlist, arrivlist, enlist);
 
-        
-        //glLoadIdentity(); // On réinitialise la matric MODELVIEW à Identité, annulant ainsi toutes les transformations précédentes
-        
-        creeMap("map7.ppm", oblist, vaisseau, projlist, arrivlist, enlist, projlistennemi);
-
+        //collisionEnnemi(projlist, enlist);
+       
         //Affichage, déplacement et tir des ennemis
         mouvementEnnemi(enlist);
-        //projlistennemi = tirEnnemi(projlistennemi, enlist);
         projlistennemi = tir(enlist, projlistennemi, startTime - prevTime);
         avanceeProjectileEnnemi(projlistennemi);
         drawProjectileEnnemi(projlistennemi);
+        collisionEnnemi(projlist, enlist);
         drawEnnemi(enlist);
 
-        //collisionProjectileEnnemi(vaisseau, projlistennemi);
-    
+
+        collisionProjectileEnnemi(vaisseau, projlistennemi);
+        collisionVaisseauEnnemi(vaisseau, enlist);
+
+           
         avanceeVaisseau(vaisseau);
         avanceeProjectile(projlist);
-
         
-    /*
-        collisionObstacle(vaisseau, oblist);
-        collisionProjectile(projlist, oblist*/
+
         glPushMatrix();
         drawVaisseau(vaisseau);
         drawProjectile(projlist);
@@ -124,24 +125,18 @@ int main(int argc, char** argv) {
         
         /* Vérifie que le vaisseau a encore de la vie, sinon arrete le jeu */
         if (vaisseau->vie <= 0){
-            //glClearColor(0.1, 0.1, 0.1 ,1.0);
-            //SDL_GL_SwapBuffers();
             glClear(GL_COLOR_BUFFER_BIT);
             glLoadIdentity();
 
             drawFullScreenJpg(1, "gameover.jpg");
-            //SDL_Delay(5000);
-
         }
 
+        /* Si le vaisseau dépasse la ligne d'arrivée */
         if (vaisseau->vie >= 100){
-            //glClearColor(0.1, 0.1, 0.1 ,1.0);
-            //SDL_GL_SwapBuffers();
             glClear(GL_COLOR_BUFFER_BIT);
             glLoadIdentity();
 
             drawFullScreenJpg(1, "win.jpg");
-            //SDL_Delay(5000);
         }
 
         // Boucle traitant les evenements

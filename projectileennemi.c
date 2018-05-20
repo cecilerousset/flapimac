@@ -23,7 +23,6 @@ ProjectileEnnemi creerProjectileEnnemi(ProjectileEnnemi projlistennemi, float x,
     proj->posx = x;
     proj->posy = y;
     proj->taille = taille;
-    proj->vie = 5;
     proj->vitesse = -1;
     proj->suiv = projlistennemi;
 
@@ -37,17 +36,15 @@ ProjectileEnnemi creerProjectileEnnemi(ProjectileEnnemi projlistennemi, float x,
     return proj;
 }
 
-//Dessine tous les projectiles n'ayant pas rencontré d'obstacle
+//Dessine les projectiles
 void drawProjectileEnnemi(ProjectileEnnemi projlistennemi){
     while (projlistennemi != NULL){
-        if(projlistennemi->vie != 0){
-            glPushMatrix();
-            glColor3f(240, 195, 0);
-            glTranslatef(projlistennemi->posx, projlistennemi->posy, 0);
-            glScalef(projlistennemi->taille, projlistennemi->taille/4, 1);
-            drawSquareTexturePng(1, "laser_r.png");
-            glPopMatrix();
-        }
+        glPushMatrix();
+        glTranslatef(projlistennemi->posx, projlistennemi->posy, 0);
+        glScalef(projlistennemi->taille, projlistennemi->taille/4, 1);
+        drawSquareTexturePng(1, "laser_r.png");
+        glPopMatrix();
+        
         projlistennemi = projlistennemi->suiv;
     }  
 }
@@ -55,32 +52,24 @@ void drawProjectileEnnemi(ProjectileEnnemi projlistennemi){
 //Fait avancer les projectiles
 void avanceeProjectileEnnemi(ProjectileEnnemi projlistennemi){
     while(projlistennemi != NULL){
-        if (projlistennemi->vie !=0){
-            projlistennemi->posx += projlistennemi->vitesse;
-            projlistennemi->boundingbox.pminx += projlistennemi->vitesse;
-            projlistennemi->boundingbox.pmaxx += projlistennemi->vitesse;
-        }
+        projlistennemi->posx += projlistennemi->vitesse;
+        projlistennemi->boundingbox.pminx += projlistennemi->vitesse;
+        projlistennemi->boundingbox.pmaxx += projlistennemi->vitesse;
+
         projlistennemi = projlistennemi->suiv;
     }
 }
 
-ProjectileEnnemi tirEnnemi(ProjectileEnnemi projlistennemi, Ennemi enlist){
-    while(enlist != NULL){
-        projlistennemi = creerProjectileEnnemi(projlistennemi, enlist->posx, enlist->posy, 1);
-
-        enlist = enlist->suiv;
-    }
-    return projlistennemi;
-}
-
+//Fais tirer les ennemis régulièrement tant qu'ils ne sont pas morts
 ProjectileEnnemi tir(Ennemi enlist, ProjectileEnnemi projlistennemi, float time){
     while(enlist != NULL){
-        if (enlist->momenttir < 0.){
+        if(enlist->vie !=0){
+            if (enlist->momenttir < 0.){
             enlist->momenttir += enlist->espacetir;
             projlistennemi = creerProjectileEnnemi(projlistennemi, enlist->posx, enlist->posy, 1);
+            }
+            enlist->momenttir -= time;
         }
-        enlist->momenttir -= time;
-
         enlist = enlist->suiv;
     }
     return projlistennemi;

@@ -37,7 +37,6 @@ Arrivee creerArrivee(Arrivee arrivlist, float x, float y, float taille){
 void drawArrivee(Arrivee arrivlist){
     while(arrivlist != NULL){
         glPushMatrix();
-        glColor3f(255, 255, 255);
         glTranslatef(arrivlist->posx, arrivlist->posy, 0);
         glScalef(arrivlist->taille, arrivlist->taille, 1);
         drawSquareTextureJpg(1, "damier.jpg");

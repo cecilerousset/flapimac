@@ -20,7 +20,7 @@ Vaisseau creerVaisseau(float x, float y, float taille){
     temp->posx = x;
     temp->posy = y;
     temp->taille = taille;
-    temp->vitesse = 0.08;
+    temp->vitesse = 0.15;
     temp->vie = 10;
     /* Bounding box */
     /* 1/2 permet de faire une bounding box qui arrive aux bords du personnage */

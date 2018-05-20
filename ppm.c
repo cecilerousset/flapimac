@@ -16,13 +16,12 @@
 #include "projectileennemi.h"
 
 //Dessine les objets sur la map
-void creeMap(char *filename, Obstacle oblist, Vaisseau vaisseau, Projectile projlist, Arrivee arrivlist, Ennemi enlist, ProjectileEnnemi projlistennemi) {  
+void creeMap(char *filename, Obstacle oblist, Vaisseau vaisseau, Projectile projlist, Arrivee arrivlist, Ennemi enlist) {  
   
 	FILE *ppmFile;
 	char line[64];
 	int w, h, i, j, r, g, b, max;
 	float x, y;
-    //ProjectileEnnemi projlistennemi = NULL;
   
   
 	//On ouvre la map
@@ -67,7 +66,7 @@ void creeMap(char *filename, Obstacle oblist, Vaisseau vaisseau, Projectile proj
         		}
         		//Bleu = Ennemi
         		if ( r==0 && g==0 && b==max ) {
-                    enlist = creerEnnemi(enlist, x, y, 1.5);
+                    //enlist = creerEnnemi(enlist, x, y, 1.5);
     	    	}
         		//Vert = Arrivee
         		if ( r==0 && g==max && b==0 ) {
@@ -77,21 +76,16 @@ void creeMap(char *filename, Obstacle oblist, Vaisseau vaisseau, Projectile proj
     		}
     	}
   	}
+    //On dessine les obstacles et on vérifie la collision
     drawObstacles(oblist);
     collisionObstacle(vaisseau, oblist);
 
+    //On dessine l'arrivée et on vérifie la collision
     drawArrivee(arrivlist);
     collisionArrivee(vaisseau, arrivlist);
 
+    //On vérifie la collision projectile-obstacle
     collisionProjectile(projlist, oblist);
-
-    /*mouvementEnnemi(enlist);
-    projlistennemi = tirEnnemi(projlistennemi, enlist);
-    avanceeProjectileEnnemi(projlistennemi);
-    drawProjectileEnnemi(projlistennemi);
-    drawEnnemi(enlist);*/
-
-    //collisionProjectileEnnemi(vaisseau, projlistennemi);
 }
 
 //Redimensionne Y pour qu'il corresponde à l'affichage voulu

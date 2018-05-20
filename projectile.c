@@ -40,7 +40,6 @@ void drawProjectile(Projectile projlist){
     while (projlist != NULL){
         if(projlist->vie != 0){
             glPushMatrix();
-            //glColor3f(240, 195, 0);
             glTranslatef(projlist->posx, projlist->posy, 0);
             glScalef(projlist->taille, projlist->taille/4, 1);
             drawSquareTexturePng(1, "laser_b.png");
@@ -54,9 +53,9 @@ void drawProjectile(Projectile projlist){
 void avanceeProjectile(Projectile projlist){
     while(projlist != NULL){
         if (projlist->vie !=0){
-            projlist->posx +=0.5;
-            projlist->boundingbox.pminx += 0.5;
-            projlist->boundingbox.pmaxx += 0.5;
+            projlist->posx += projlist->vitesse;
+            projlist->boundingbox.pminx += projlist->vitesse;
+            projlist->boundingbox.pmaxx += projlist->vitesse;
         }
         projlist = projlist->suiv;
     }
